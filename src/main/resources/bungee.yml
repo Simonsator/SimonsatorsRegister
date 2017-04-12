@@ -1,0 +1,6 @@
+name: Simonsators-Register
+version: ${project.version}
+author: Simonsator
+depends: [PartyAndFriends]
+main: de.simonsator.register.RegisterMain
+description: An add-on for party and friends to register people
