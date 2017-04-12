@@ -20,12 +20,6 @@ public class RegisterConfig extends ConfigurationCreator {
 
 	private void loadDefaults() {
 		set("ApiOnly", false);
-		set("MySQL.Host", "localhost");
-		set("MySQL.Port", 3306);
-		set("MySQL.UseSSL", false);
-		set("MySQL.Username", "root");
-		set("MySQL.Password", "password");
-		set("MySQL.Database", "friends_register");
 		set("Command.Register.Name", "register", "registermanager");
 		set("Command.Register.Permission", "");
 		set("Command.Register.Priority", 20);

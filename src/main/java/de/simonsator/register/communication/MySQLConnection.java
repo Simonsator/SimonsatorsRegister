@@ -12,8 +12,11 @@ import java.sql.*;
  * @version 1.0.0 12.04.17
  */
 public class MySQLConnection extends SQLCommunication {
+	private final String TABLE_PREFIX;
+
 	public MySQLConnection(MySQLData pMySQLData) {
 		super(pMySQLData);
+		TABLE_PREFIX = pMySQLData.TABLE_PREFIX;
 		importDatabase();
 	}
 
@@ -21,7 +24,7 @@ public class MySQLConnection extends SQLCommunication {
 		Connection con = getConnection();
 		PreparedStatement prepStmt = null;
 		try {
-			prepStmt = con.prepareStatement("CREATE TABLE IF NOT EXISTS `register_friend_manger` (`player_id` INT(8) NOT NULL, " + "`password` CHAR(40) NOT NULL);");
+			prepStmt = con.prepareStatement("CREATE TABLE IF NOT EXISTS `" + TABLE_PREFIX + "register_friend_manger` (`player_id` INT(8) NOT NULL, " + "`password` CHAR(40) NOT NULL);");
 			prepStmt.executeUpdate();
 			prepStmt.close();
 		} catch (SQLException e) {
@@ -36,7 +39,7 @@ public class MySQLConnection extends SQLCommunication {
 		Statement stmt = null;
 		ResultSet rs = null;
 		try {
-			rs = (stmt = con.createStatement()).executeQuery("select player_id FROM register_friend_manger WHERE player_id='" + pPlayerID + "' LIMIT 1");
+			rs = (stmt = con.createStatement()).executeQuery("select player_id FROM " + TABLE_PREFIX + "register_friend_manger WHERE player_id='" + pPlayerID + "' LIMIT 1");
 			if (rs.next())
 				return true;
 		} catch (SQLException e) {
@@ -53,7 +56,7 @@ public class MySQLConnection extends SQLCommunication {
 		PreparedStatement prepStmt = null;
 		try {
 			prepStmt = con.prepareStatement(
-					"INSERT INTO register_friend_manger VALUES (?, ?);");
+					"INSERT INTO " + TABLE_PREFIX + "register_friend_manger VALUES (?, ?);");
 			prepStmt.setInt(1, pPlayerID);
 			prepStmt.setString(2, encryptPassword(pPassword));
 			prepStmt.executeUpdate();
@@ -69,7 +72,7 @@ public class MySQLConnection extends SQLCommunication {
 		PreparedStatement prepStmt = null;
 		try {
 			prepStmt = con.prepareStatement(
-					"UPDATE register_friend_manger SET password=? WHERE player_id=?;");
+					"UPDATE " + TABLE_PREFIX + "register_friend_manger SET password=? WHERE player_id=?;");
 			prepStmt.setString(1, encryptPassword(pPassword));
 			prepStmt.setInt(2, pPlayerID);
 			prepStmt.executeUpdate();

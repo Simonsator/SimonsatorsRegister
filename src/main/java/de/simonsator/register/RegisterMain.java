@@ -3,6 +3,7 @@ package de.simonsator.register;
 import de.simonsator.partyandfriends.api.PAFExtension;
 import de.simonsator.partyandfriends.communication.sql.MySQLData;
 import de.simonsator.partyandfriends.friends.commands.Friends;
+import de.simonsator.partyandfriends.main.Main;
 import de.simonsator.register.commands.ChangePasswordCommand;
 import de.simonsator.register.commands.RegisterCommand;
 import de.simonsator.register.communication.MySQLConnection;
@@ -29,10 +30,13 @@ public class RegisterMain extends PAFExtension {
 		instance = this;
 		try {
 			Configuration config = new RegisterConfig(new File(getDataFolder(), "config.yml")).getCreatedConfiguration();
-			MySQLData mySQLData = new MySQLData(config.getString("MySQL.Host"),
-					config.getString("MySQL.Username"), config.getString("MySQL.Password"),
-					config.getInt("MySQL.Port"), config.getString("MySQL.Database"),
-					config.getString("MySQL.TablePrefix"), config.getBoolean("MySQL.UseSSL"));
+			MySQLData mySQLData = new MySQLData(Main.getInstance().getConfig().getString("MySQL.Host"),
+					Main.getInstance().getConfig().getString("MySQL.Username"),
+					Main.getInstance().getConfig().getString("MySQL.Password"),
+					Main.getInstance().getConfig().getInt("MySQL.Port"),
+					Main.getInstance().getConfig().getString("MySQL.Database"),
+					Main.getInstance().getConfig().getString("MySQL.TablePrefix"),
+					Main.getInstance().getConfig().getBoolean("MySQL.UseSSL"));
 			connection = new MySQLConnection(mySQLData);
 			if (!config.getBoolean("ApiOnly")) {
 				Friends.getInstance().addCommand(new RegisterCommand(config.getStringList("Command.Register.Name"),
